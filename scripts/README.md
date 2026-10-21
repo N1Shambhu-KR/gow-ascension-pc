@@ -32,6 +32,7 @@ Needs `brew install cmake ninja sdl2 glslang spirv-cross ffmpeg`, and for the GP
 | `windows/run.ps1` | Runs the game for `-Seconds` (0: until closed), then `tools\log_summary.py`. `-Save fresh\|backup\|keep`, `-Menu` (main menu in ~15 s), `-Level` (first level in ~100 s), `-Rpcs3`, `-CaptureAt`, `-Profile`. |
 | `windows/launcher.ps1 [-Play]` | The launcher. |
 | `windows/snap.ps1 -Out x.png` | Saves the game window as a PNG, even behind other windows. |
+| `windows/replay.ps1 [-Sets] [-Save\|-Base] [-Runs] [-Env]` | Replays captured SPU jobs (`work\edge_cases\<set>`) outside the game: bytes PUT, and with `-Save` / `-Base` the whole local store and registers at return against a lifted baseline. |
 | `windows/relift.ps1 jobmods\|fragments` | Re-lifts SPU job modules or fragments. `-Only <sha>` lifts one module. |
 | `windows/test-fifo.ps1` | FIFO drain and recovery regression, headless. |
 | `windows/test-spu-launch.ps1`, `test-spu-resolver.ps1` | SPU launch hooks and resolver tests, without the game. |
