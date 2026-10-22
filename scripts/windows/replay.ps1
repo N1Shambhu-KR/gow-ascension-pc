@@ -6,6 +6,8 @@
 #   .\scripts\windows\replay.ps1 -Base                                      # this build against it
 #   .\scripts\windows\replay.ps1 -Sets level6 -Runs 20                      # timing only
 #
+# Each set is killed after -TimeoutSec (default 180) if a job never returns.
+#
 # Sets are folders of work\edge_cases (default level6 and boot218). Logs in
 # build\logs\replay-<set>[-<Name>].err; prints each set's summary lines and the
 # first differing jobs.
@@ -15,7 +17,8 @@ param(
     [switch]$Save,
     [switch]$Base,
     [hashtable]$Env = @{},
-    [string]$Name = ""
+    [string]$Name = "",
+    [int]$TimeoutSec = 180
 )
 
 . (Join-Path $PSScriptRoot "env.ps1")
@@ -35,8 +38,18 @@ foreach ($set in $Sets) {
     $old = @{}
     foreach ($k in $vars.Keys) { $old[$k] = [Environment]::GetEnvironmentVariable($k); [Environment]::SetEnvironmentVariable($k, [string]$vars[$k]) }
     $log = Join-Path $Logs ("replay-$set" + $(if ($Name) { "-$Name" } else { "" }) + ".err")
-    & $Exe $Elf 2> $log > $null
-    if ($LASTEXITCODE -ne 0) { $failed++ }
+    # A job that loops must not hold the script: past -TimeoutSec the replay
+    # is killed and the set counts as failed.
+    $p = Start-Process -FilePath $Exe -ArgumentList "`"$Elf`"" -NoNewWindow -PassThru `
+        -RedirectStandardError $log -RedirectStandardOutput "$log.out"
+    if (-not $p.WaitForExit($TimeoutSec * 1000)) {
+        Stop-Process -Id $p.Id -Force -Confirm:$false
+        $p.WaitForExit()
+        Write-Host "!! $set killed after $TimeoutSec s (a job did not return); last lines of $log"
+        Get-Content $log -Tail 3 | ForEach-Object { Write-Host "   $_" }
+        $failed++
+    }
+    elseif ($p.ExitCode -ne 0) { $failed++ }
     foreach ($k in $old.Keys) { [Environment]::SetEnvironmentVariable($k, $old[$k]) }
     Write-Host "== $set ($log)"
     Select-String -Path $log -Pattern '^\[replay\] (\d+ jobs|whole LS)' | ForEach-Object { Write-Host $_.Line }
