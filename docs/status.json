@@ -1,0 +1,111 @@
+{
+  "labels": {
+    "title": "Status", "libraries": "bibliotecas", "hardware": "hardware",
+    "libraries_heading": "Bibliotecas do firmware: {pct} ({done}/{total} funções)",
+    "hardware_heading": "Hardware do PS3: {pct}",
+    "working": "Funcionando", "partial": "Parcial", "pending": "Pendente", "other": "Outras",
+    "decimal": ","
+  },
+  "footnote": ["Bibliotecas: as funções que o EBOOT importa do firmware; um stub conta como parcial, a não ser que não fazer nada seja o correto (exceções em docs/status.json).", "Hardware: ponderado por componente; syscalls, jobs nativos de SPU e velocidade são medidos (velocidade = fps do primeiro nível / 30)."],
+  "libraries": [
+    {
+      "group": "Sistema",
+      "column": 0,
+      "libraries": ["sysPrxForUser", "sys_fs", "cellSysutil", "cellGame", "cellSysmodule", "cellSysutilAvconfExt", "cellRtc"]
+    },
+    {
+      "group": "GPU / SPU",
+      "column": 1,
+      "libraries": ["cellSpurs", "cellGcmSys"]
+    },
+    {
+      "group": "Mídia / entrada",
+      "column": 1,
+      "libraries": ["libvdec", "cellAudio", "sys_io", "cellVoice"]
+    },
+    {
+      "group": "Rede",
+      "column": 2,
+      "libraries": ["sys_net", "cellHttp", "cellNetCtl", "cellSsl", "cellHttpUtil"]
+    },
+    {
+      "group": "PSN",
+      "column": 2,
+      "libraries": ["sceNp", "sceNpTrophy", "sceNpTus", "sceNpUtil", "sceNp2", "sceNpCommerce2", "cellSysutilNpEula"]
+    }
+  ],
+  "overrides": {
+    "cellSysmoduleInitialize": {"status": "working", "why": "nothing to set up on the host"},
+    "cellGamePatchCheck": {"status": "working", "why": "answers NOTPATCH, right for the 1.00 disc"},
+    "cellGcmDumpGraphicsError": {"status": "working", "why": "a debug dump; never called"},
+    "_sys_process_atexitspawn": {"status": "working", "why": "exit-spawn hook; the port never spawns a process"},
+    "_sys_process_at_Exitspawn": {"status": "working", "why": "exit-spawn hook; the port never spawns a process"},
+    "sys_prx_exitspawn_with_level": {"status": "working", "why": "exit-spawn hook; the port never spawns a process"},
+    "cellFsAioInit": {"status": "working", "why": "cellFsAioRead is synchronous: nothing to set up"},
+    "cellFsAioFinish": {"status": "working", "why": "cellFsAioRead is synchronous: nothing to tear down"},
+    "cellFsAioCancel": {"status": "working", "why": "cellFsAioRead is synchronous: nothing is ever outstanding"},
+    "cellNetCtlNetStartDialogAbortAsync": {"status": "working", "why": "the net-start dialog finishes at once: nothing to abort"},
+    "cellAudioOutGetSoundAvailability": {"status": "working", "why": "answers from its arguments (the stub check misreads it)"},
+    "cellSpursTasksetAttributeSetName": {"status": "working", "why": "a debug name only"}
+  },
+  "hardware": [
+    {
+      "group": "PPU",
+      "column": 0,
+      "parts": [
+        {"name": "Código recompilado", "status": "working", "weight": 10},
+        {"name": "Syscalls 46/50", "done": 0.92, "weight": 4},
+        {"name": "Threads", "status": "working", "weight": 3}
+      ]
+    },
+    {
+      "group": "SPURS",
+      "column": 0,
+      "parts": [
+        {"name": "Kernel", "status": "working", "weight": 3},
+        {"name": "Listas de jobs", "status": "working", "weight": 3},
+        {"name": "Tasksets", "status": "working", "weight": 2}
+      ]
+    },
+    {
+      "group": "SPU",
+      "column": 1,
+      "parts": [
+        {"name": "Código traduzido (33 módulos de job)", "status": "working", "weight": 8},
+        {"name": "MFC / DMA", "status": "working", "weight": 3},
+        {"name": "Jobs nativos 1/33", "done": 0.03, "weight": 3},
+        {"name": "Atômicos", "status": "working", "weight": 2},
+        {"name": "Interpretador", "status": "working", "weight": 2}
+      ]
+    },
+    {
+      "group": "RSX",
+      "column": 2,
+      "parts": [
+        {"name": "RSX do RPCS3 (Vulkan / OpenGL)", "status": "working", "weight": 10},
+        {"name": "Live draw D3D12", "status": "partial", "weight": 4},
+        {"name": "Live draw Metal", "status": "partial", "weight": 2},
+        {"name": "Flip / vblank", "status": "working", "weight": 2}
+      ]
+    },
+    {
+      "group": "E/S",
+      "column": 3,
+      "parts": [
+        {"name": "Áudio", "status": "working", "weight": 3},
+        {"name": "Vídeo", "status": "working", "weight": 2},
+        {"name": "Entrada", "status": "working", "weight": 2},
+        {"name": "Sistema de arquivos", "status": "working", "weight": 2},
+        {"name": "Saves", "status": "working", "weight": 2},
+        {"name": "Rede", "status": "pending", "weight": 2}
+      ]
+    },
+    {
+      "group": "Velocidade",
+      "column": 3,
+      "parts": [
+        {"name": "Primeiro nível 16,7/30 fps", "done": 0.557, "weight": 15}
+      ]
+    }
+  ]
+}

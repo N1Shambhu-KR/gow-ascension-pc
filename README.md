@@ -36,6 +36,10 @@ Outubro de 2026, no Windows:
 
 Ainda não há release. Os marcos estão em [docs/MILESTONES.md](docs/MILESTONES.md).
 
+<!-- Gerado por ps3kit/tools/status_map.py a partir de meta/EBOOT.imports.json e docs/status.json:
+     python ..\ps3kit\tools\status_map.py --imports meta\EBOOT.imports.json --status docs\status.json --src src --src host --out docs\images\status.svg -->
+<p align="center"><img src="docs/images/status.svg" alt="Status: bibliotecas do firmware e hardware do PS3" width="900"></p>
+
 ## Jogando
 
 Com o jogo compilado (abaixo), abra o launcher:
