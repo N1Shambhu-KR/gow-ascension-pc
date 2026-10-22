@@ -26,7 +26,9 @@ $failed = 0
 foreach ($set in $Sets) {
     $dir = Join-Path $Cfg.WORK_DIR "edge_cases\$set"
     $end = Join-Path $Cfg.WORK_DIR "edge_cases\${set}_end"
-    $vars = @{ SPU_JOB_REPLAY = "$dir,5,$Runs" }
+    # The job's code fragments as this build lifts them, not as the capturing
+    # build had them (module 218's two input lists; spu_jobcap.c)
+    $vars = @{ SPU_JOB_REPLAY = "$dir,5,$Runs"; SPU_JOB_REPLAY_RECLAIM = "1CF50:11000,28F50:1D000" }
     if ($Save) { New-Item -ItemType Directory -Force $end | Out-Null; $vars.SPU_JOB_REPLAY_LS = "save,$end" }
     elseif ($Base) { $vars.SPU_JOB_REPLAY_LS = "base,$end" }
     foreach ($k in $Env.Keys) { $vars[$k] = $Env[$k] }

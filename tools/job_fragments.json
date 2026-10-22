@@ -116,7 +116,7 @@
  },
  {
   "ea": "0x7261f0",
-  "span": "0x1bd0",
+  "span": "0x1510",
   "seen": false
  },
  {
@@ -146,7 +146,7 @@
  },
  {
   "ea": "0x728a90",
-  "span": "0xe60",
+  "span": "0x2a0",
   "seen": false
  },
  {
@@ -225,6 +225,26 @@
  {
   "ea": "0x725ea0",
   "span": "0x350",
+  "seen": false
+ },
+ {
+  "ea": "0x727700",
+  "span": "0x240",
+  "seen": true
+ },
+ {
+  "ea": "0x727940",
+  "span": "0x480",
+  "seen": false
+ },
+ {
+  "ea": "0x728d30",
+  "span": "0x1c0",
+  "seen": true
+ },
+ {
+  "ea": "0x728ef0",
+  "span": "0xa00",
   "seen": false
  }
 ]
