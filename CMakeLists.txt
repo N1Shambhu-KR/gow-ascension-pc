@@ -325,7 +325,18 @@ if(CMAKE_CXX_COMPILER_ID MATCHES "Clang|GNU")
     target_compile_options(${PROJECT_NAME} PRIVATE
         -Wall -Wextra -Wno-unused-parameter
         -fno-strict-aliasing
+        # Explicit, as in the runtime's CMakeLists: a cache can carry
+        # CMAKE_C/CXX_FLAGS_RELEASE="" (it did after a reconfigure on
+        # 2026-10-21), and clang-cl with no /O flag compiles at /Od -- the
+        # lifted PPU code ran unoptimised and the first level fell from ~15
+        # to ~7 fps without a word.
+        $<$<CONFIG:Release,RelWithDebInfo>:-O2>
     )
+    target_compile_definitions(${PROJECT_NAME} PRIVATE $<$<CONFIG:Release>:NDEBUG>)
+    if(CMAKE_CXX_COMPILER_FRONTEND_VARIANT STREQUAL "MSVC")
+        # clang-cl links with lld-link: the map for the profiler, as below
+        target_link_options(${PROJECT_NAME} PRIVATE /MAP)
+    endif()
 elseif(MSVC)
     target_compile_options(${PROJECT_NAME} PRIVATE
         /W3 /wd4100 /wd4244 /wd4267
