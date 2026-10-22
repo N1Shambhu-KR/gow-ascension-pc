@@ -248,6 +248,13 @@ if(SPU_SOURCES)
         endif()
         if(PORT_HAS_MSSE41)
             set_source_files_properties(${SPU_SOURCES} PROPERTIES COMPILE_OPTIONS "-O2;-msse4.1${SPU_FMA_FLAG};${SPU_ROUNDING_MATH};${SPU_NOWARN}")
+            # Code generation experiments on module 218's lift alone (measured
+            # with the job replay): extra flags for that one TU, empty by default.
+            set(ASCENSION_SPU_LAB_FLAGS "" CACHE STRING "Extra compile flags for module 218's lifted TU (experiments)")
+            set(SPU_LAB_FILE "${SPU_DIR}/jobmod_7868e9b847d1_e6D98/spu_recomp.c")
+            if(ASCENSION_SPU_LAB_FLAGS AND EXISTS "${SPU_LAB_FILE}")
+                set_source_files_properties("${SPU_LAB_FILE}" PROPERTIES COMPILE_OPTIONS "-O2;-msse4.1${SPU_FMA_FLAG};${SPU_ROUNDING_MATH};${SPU_NOWARN};${ASCENSION_SPU_LAB_FLAGS}")
+            endif()
         else()
             set_source_files_properties(${SPU_SOURCES} PROPERTIES COMPILE_OPTIONS "-O2;${SPU_ROUNDING_MATH};${SPU_NOWARN}")
         endif()

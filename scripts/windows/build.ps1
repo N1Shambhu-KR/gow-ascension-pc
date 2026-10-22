@@ -25,6 +25,7 @@ if ($Configure -or -not (Test-Path (Join-Path $Build "build.ninja"))) {
     $cmakeArgs = @(
         "-S", "`"$Root`"", "-B", "`"$Build`"", "-G", "Ninja",
         "-DCMAKE_BUILD_TYPE=$($Cfg.BUILD_TYPE)",
+        "-DASCENSION_SPU_LAB_FLAGS=`"$($env:SPU_LAB_FLAGS)`"",
         "-DCMAKE_C_COMPILER=clang-cl", "-DCMAKE_CXX_COMPILER=clang-cl",
         "-DPS3RECOMP_DIR=`"$($Cfg.PS3KIT_DIR)`"",
         "-DPS3RECOMP_FFMPEG_RUNTIME=ON", "-DPS3RECOMP_FFMPEG_INCLUDE_DIR=`"$($Cfg.FFMPEG_INCLUDE_DIR)`"",
