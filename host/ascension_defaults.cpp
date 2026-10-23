@@ -11,6 +11,12 @@
 //                      records none of this title's draws (every present
 //                      had draws=0: a black window); the live engine draws
 //                      the intro screens correctly.
+//   LD_SWIN            0: a texture smaller than the surface it aliases reads
+//                      the whole surface, not a copy of its top-left
+//                      corner (live draw's surface_window, from upstream).
+//                      With the window the menu's depth of field blurred the
+//                      whole scene and shook from frame to frame; without it
+//                      the picture is close to RPCS3's.
 //   GCM_PARK_WAIT_MS   how long a parked FIFO waits to be patched before the
 //                      runtime follows `put` (ps3recomp's default is 50 ms).
 //                      This title's SPU jobs fill a frame and patch the park
@@ -126,6 +132,7 @@ struct AscensionDefaults {
     {
         set_default("PS3_EDGE_ZLIB_HLE", "1");
         set_default("RSX_LIVE_DRAW", "1");
+        set_default("LD_SWIN", "0");
         set_default("GCM_PARK_WAIT_MS", "2000");
         set_default("GCM_SEMA_ACQUIRE", "1");
         set_default("GCM_PARK_SPU_HOLD_MS", "1000");
