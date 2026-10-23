@@ -66,6 +66,21 @@ if ($Save -ne "keep" -and (Test-Path $Slot)) {
     Move-Item $Slot $dest
     Write-Host "save moved to $dest"
 }
+# A run killed while FIOS rewrites its HDD cache leaves cache.idx zero-filled,
+# and every later boot loops re-reading it on a black screen: move it aside
+# (the game builds a new one).
+$Fios = Join-Path $Work "disc\cache\BCES01741\fios"
+$FiosIdx = Join-Path $Fios "cache.idx"
+if (Test-Path $FiosIdx) {
+    $head = [byte[]]::new(64)
+    $fs = [IO.File]::OpenRead($FiosIdx); $nread = $fs.Read($head, 0, 64); $fs.Close()
+    if ($nread -eq 0 -or -not ($head[0..($nread - 1)] | Where-Object { $_ -ne 0 })) {
+        $dest = Join-Path $Work ("save-moved\fios-broken-" + (Get-Date -Format "yyyyMMdd-HHmmss"))
+        New-Item -ItemType Directory -Force $dest | Out-Null
+        Get-ChildItem $Fios | Move-Item -Destination $dest
+        Write-Host "FIOS cache.idx was zero-filled (a killed run): moved to $dest"
+    }
+}
 if ($Save -eq "backup") {
     Copy-Item -Recurse (Join-Path $Work "save-backup\BCES01741-SYSDATA") $SaveDir
     Write-Host "save-backup copied in"
