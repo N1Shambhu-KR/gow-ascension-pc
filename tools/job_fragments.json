@@ -246,5 +246,15 @@
   "ea": "0x728ef0",
   "span": "0xa00",
   "seen": false
+ },
+ {
+  "ea": "0x6ac8b0",
+  "span": "0x28b0",
+  "seen": true,
+  "entries": [
+   "0x6aebd0",
+   "0x6aee44",
+   "0x6aee70"
+  ]
  }
 ]
