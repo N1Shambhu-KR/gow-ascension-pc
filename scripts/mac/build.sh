@@ -8,7 +8,8 @@
 #   CONFIGURE=1 scripts/mac/build.sh   # run CMake again (after changing .env)
 #
 # Settings from .env (scripts/unix/env.sh); RPCS3_RSX=1 there links RPCS3's RSX
-# (scripts/mac/build-gpu.sh first).
+# (scripts/mac/build-gpu.sh first), and VKD3D_DIR=<prefix> builds the live
+# draw engine's D3D12 on vkd3d (scripts/mac/build-vkd3d.sh first).
 #
 # Needs: brew install cmake ninja sdl2 glslang spirv-cross ffmpeg
 # A build from scratch takes 20-40 minutes and wants 16 GB of memory; JOBS=<n>
@@ -40,10 +41,18 @@ if [ "$RPCS3_RSX" = 1 ]; then
         exit 1
     fi
 fi
+vkd3d="-DPS3RECOMP_LIVE_DRAW_VKD3D=OFF"
+if [ -n "$VKD3D_DIR" ]; then
+    if [ ! -f "$VKD3D_DIR/include/vkd3d/vkd3d_dxgi1_4.h" ]; then
+        echo "VKD3D_DIR=$VKD3D_DIR has no vkd3d: run scripts/mac/build-vkd3d.sh first" >&2
+        exit 1
+    fi
+    vkd3d="-DPS3RECOMP_LIVE_DRAW_VKD3D=ON -DPS3RECOMP_VKD3D_DIR=$VKD3D_DIR"
+fi
 if [ ! -f "$build/build.ninja" ] || [ "${CONFIGURE:-}" = 1 ]; then
     cmake -S "$here" -B "$build" -G Ninja -DCMAKE_BUILD_TYPE="$BUILD_TYPE" -DPS3RECOMP_DIR="$PS3KIT_DIR" \
         -DPS3RECOMP_FFMPEG_RUNTIME=ON -DPS3RECOMP_FFMPEG_INCLUDE_DIR="${FFMPEG_INCLUDE_DIR:-$(brew --prefix)/include}" \
-        $rpcs3 \
+        $rpcs3 $vkd3d \
         > "$logs/configure.log" 2>&1 || { tail -n 20 "$logs/configure.log"; exit 1; }
 fi
 

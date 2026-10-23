@@ -1,0 +1,15 @@
+HLSL: GetDimensions on UAV textures (RWTexture2D and the others texture
+GetDimensions takes). vkd3d 2.1 lists the method for textures only, and the
+live draw engine's compute shaders size their dispatch by the UAV they
+write. The TPF resinfo instruction takes a UAV operand already.
+
+--- a/libs/vkd3d-shader/hlsl.y
++++ b/libs/vkd3d-shader/hlsl.y
+@@ -6736,6 +6736,7 @@
+ 
+ static const struct method_function uav_methods[] =
+ {
++    { "GetDimensions", add_getdimensions_method_call, "00111111111110" },
+     { "Store",  add_store_method_call, "00000000000001" },
+     { "Store2", add_store_method_call, "00000000000001" },
+     { "Store3", add_store_method_call, "00000000000001" },

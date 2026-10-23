@@ -5,8 +5,8 @@
 #   . "$here/scripts/unix/env.sh"
 #
 # Sets PS3KIT_DIR, WORK_DIR, BUILD_TYPE, JOBS, RPCS3_RSX, GPU_BUILD_DIR,
-# FFMPEG_INCLUDE_DIR (paths made absolute). Stops when .env or a setting the
-# build needs is missing.
+# FFMPEG_INCLUDE_DIR, VKD3D_DIR (paths made absolute). Stops when .env or a
+# setting the build needs is missing.
 
 env_file="$here/.env"
 [ -f "$env_file" ] || { echo "missing $env_file" >&2; exit 1; }
@@ -19,7 +19,7 @@ while IFS= read -r line || [ -n "$line" ]; do
     val=$(printf '%s' "$val" | sed -e 's/^ *//' -e 's/ *$//' -e 's/^"\(.*\)"$/\1/' -e "s/^'\(.*\)'$/\1/")
     key=$(printf '%s' "$key" | tr -d ' ')
     case "$key" in
-        PS3KIT_DIR|WORK_DIR|BUILD_TYPE|JOBS|RPCS3_RSX|GPU_BUILD_DIR|FFMPEG_INCLUDE_DIR) eval "$key=\$val" ;;
+        PS3KIT_DIR|WORK_DIR|BUILD_TYPE|JOBS|RPCS3_RSX|GPU_BUILD_DIR|FFMPEG_INCLUDE_DIR|VKD3D_DIR) eval "$key=\$val" ;;
     esac
 done < "$env_file"
 
@@ -30,6 +30,7 @@ for key in PS3KIT_DIR WORK_DIR BUILD_TYPE; do
 done
 PS3KIT_DIR=$(abs "$PS3KIT_DIR"); WORK_DIR=$(abs "$WORK_DIR")
 GPU_BUILD_DIR=$(abs "${GPU_BUILD_DIR:-}"); FFMPEG_INCLUDE_DIR=$(abs "${FFMPEG_INCLUDE_DIR:-}")
+VKD3D_DIR=$(abs "${VKD3D_DIR:-}")
 RPCS3_RSX=${RPCS3:-${RPCS3_RSX:-0}}
 JOBS=${JOBS:-}
 [ -d "$PS3KIT_DIR" ] || { echo "PS3KIT_DIR not found: $PS3KIT_DIR" >&2; exit 1; }
