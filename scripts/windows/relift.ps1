@@ -4,6 +4,7 @@
 #   .\scripts\windows\relift.ps1 jobmods                       # all 15 modules (all of them recompile)
 #   .\scripts\windows\relift.ps1 jobmods -Only e9f3f00d551e    # one module: only it recompiles
 #   .\scripts\windows\relift.ps1 fragments                     # tools\job_fragments.json -> src\spu\pic_*
+#   .\scripts\windows\relift.ps1 fragments -Only 0x71c310       # one fragment (EAs, comma-separated): only it recompiles
 #
 # Extra entries per module: tools\jobmods_extra_funcs.json. Run .\scripts\windows\build.ps1 after.
 param(
@@ -53,5 +54,5 @@ if ($What -eq "ppu") {
 } else {
     python (Join-Path $Tools "lift_spu_pic.py") --elf (Join-Path $Work "disc\PS3_GAME\USRDIR\EBOOT.ELF") `
         --fragments (Join-Path $Root "tools\job_fragments.json") --out $Spu --register (Join-Path $Spu "pic_register.c") `
-        --symbol-prefix ascension 2>&1 | Tee-Object $Log
+        --symbol-prefix ascension @(if ($Only) { "--only", $Only }) 2>&1 | Tee-Object $Log
 }
