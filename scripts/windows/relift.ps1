@@ -5,10 +5,11 @@
 #   .\scripts\windows\relift.ps1 jobmods -Only e9f3f00d551e    # one module: only it recompiles
 #   .\scripts\windows\relift.ps1 fragments                     # tools\job_fragments.json -> src\spu\pic_*
 #   .\scripts\windows\relift.ps1 fragments -Only 0x71c310       # one fragment (EAs, comma-separated): only it recompiles
+#   .\scripts\windows\relift.ps1 post                          # SPU image 2 (the post-process round), with its stage hooks
 #
 # Extra entries per module: tools\jobmods_extra_funcs.json. Run .\scripts\windows\build.ps1 after.
 param(
-    [Parameter(Mandatory)][ValidateSet("ppu", "jobmods", "fragments")][string]$What,
+    [Parameter(Mandatory)][ValidateSet("ppu", "jobmods", "fragments", "post")][string]$What,
     [string]$Only = ""
 )
 
@@ -51,6 +52,22 @@ if ($What -eq "ppu") {
     } else {
         python (Join-Path $Tools "lift_jobmods.py") --jobmods $mods --out $Spu --register (Join-Path $Spu "jobmods_register.c") `
             --symbol-prefix ascension --extra-funcs-json (Join-Path $Root "tools\jobmods_extra_funcs.json") 2>&1 | Tee-Object $Log
+    }
+} elseif ($What -eq "post") {
+    # The post-process round's image: its stage functions come through ps3kit
+    # libs\spu_hle\gowa_post (capture, bench, native versions).
+    $img = "spu_0001_at_0067F580"
+    $elf = Join-Path $Root "meta\spu\$img.elf"
+    $out = Join-Path $Spu $img
+    $nat = @()
+    foreach ($l in Get-Content (Join-Path $Cfg.PS3KIT_DIR "libs\spu_hle\gowa_post\native_functions.txt")) {
+        if ($l -match '^\s*(0x[0-9A-Fa-f]+)\s+(\S+)') { $nat += "--native"; $nat += "$($Matches[1])=$($Matches[2])" }
+    }
+    python (Join-Path $Tools "spu_lifter.py") $elf --auto-functions $elf --symbol-prefix "${img}_" -o $out @nat 2>&1 | Tee-Object $Log
+    # The includes as build_spu_workloads.py leaves them (resolved by -I).
+    foreach ($f in "spu_recomp.c", "spu_recomp.h") {
+        $path = Join-Path $out $f
+        (Get-Content -Raw $path).Replace('#include "../../runtime/spu/', '#include "') | Set-Content -NoNewline -Encoding utf8 $path
     }
 } else {
     python (Join-Path $Tools "lift_spu_pic.py") --elf (Join-Path $Work "disc\PS3_GAME\USRDIR\EBOOT.ELF") `
