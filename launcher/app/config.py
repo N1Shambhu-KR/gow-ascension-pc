@@ -136,7 +136,7 @@ EBOOT = (WORK / 'disc' / 'PS3_GAME' / 'USRDIR' / 'EBOOT.ELF') if WINDOWS else RO
 DEFAULTS = {
     'display_mode': 'window', 'window_size': '1280x720', 'perf_overlay': '1',
     'renderer': RENDERERS[0][0], 'render_scale': '100', 'aspect': 'keep', 'scale_filter': 'linear',
-    'vsync': 'auto', 'aniso': '0',
+    'vsync': 'auto', 'aniso': '0', 'dof': '1', 'motion_blur': '1', 'mlaa': '1',
     'esc_quits': '0', 'language': '18', 'enter_button': 'cross', 'subtitles': '1',
     'keymap': KEY_PRESETS['pc'], 'padmap': PAD_DEFAULTS, 'pad_deadzone': '24',
     'mods_dir': str(ROOT / 'mods'), 'mods_enabled': [], 'mods_order': [],

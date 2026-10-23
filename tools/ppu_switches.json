@@ -1,0 +1,10 @@
+[
+  {"addr": "0x0040559C", "insn": "0x38A00000", "env": "GOWA_NO_DOF",
+   "note": "li r5,0: depth of field off (RPCS3 'Disable Depth of Field', 1.12 0x43BCBC)"},
+  {"addr": "0x00408AF0", "insn": "0x38A00000", "env": "GOWA_NO_MB",
+   "note": "li r5,0: motion blur off (RPCS3 'Disable Motion Blur', 1.12 0x43F210)"},
+  {"addr": "0x00369B34", "insn": "0x60000000", "env": "GOWA_NO_MLAA",
+   "note": "nop: MLAA off (RPCS3 'Disable MLAA', 1.12 0x397754), with PS3_IMAGE_PATCH=81C9B7:00"},
+  {"addr": "0x00369B64", "insn": "0x60000000", "env": "GOWA_NO_MLAA",
+   "note": "nop: MLAA off (RPCS3 'Disable MLAA', 1.12 0x397784)"}
+]

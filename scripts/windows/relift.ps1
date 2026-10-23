@@ -25,6 +25,7 @@ if ($What -eq "ppu") {
     python (Join-Path $Tools "ppu_lifter.py") (Join-Path $Work "disc\PS3_GAME\USRDIR\EBOOT.ELF") `
         --functions (Join-Path $Root "meta\functions.json") --hle-stubs (Join-Path $Root "meta\EBOOT.imports.json") `
         --toc 0x81EF60 --code-end 0x62C4CC --chunk-lines 150000 --reg-locals `
+        --insn-switches (Join-Path $Root "tools\ppu_switches.json") `
         -o (Join-Path $Root "src\recomp") 2>&1 | Tee-Object $Log
 } elseif ($What -eq "jobmods") {
     $mods = Join-Path $Work "jobmods"

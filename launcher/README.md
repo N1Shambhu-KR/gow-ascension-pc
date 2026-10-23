@@ -13,6 +13,7 @@ Pages: Home (cross-fading artwork, quick settings), Video, Controls, Game, Mods,
 | Display mode, window size | `PS3_FULLSCREEN`, `PS3_WINDOW_SIZE` (F11 or Alt+Enter toggles in game; macOS F11 or Ctrl+Cmd+F) |
 | Aspect ratio, image scaling | `PS3_ASPECT=keep`/`stretch`, `PS3_SCALE_FILTER=linear`/`nearest`/`fsr` (RPCS3 and Metal) |
 | VSync | `PS3_VSYNC=1`/`0`, unset for each renderer's own (Metal and live draw on, RPCS3 off) |
+| Depth of field, motion blur, MLAA | `GOWA_NO_DOF`, `GOWA_NO_MB`, `GOWA_NO_MLAA` when off (RPCS3's "Disable ..." patches for 1.12, found again in 1.00 and lifted as switches: `tools/ppu_switches.json`); MLAA off also sets `PS3_IMAGE_PATCH=81C9B7:00` (its flag in the game's data) |
 | Keyboard and mouse | `PS3_KEYMAP` (`cross=Space,K;square=J,Mouse1;...`, two keys per control) |
 | Controller | `PS3_PADMAP` (`cross=a;circle=b;...`), `PS3_PAD_DEADZONE` (percent) |
 | Disc folder | `PS3_VFS_ROOT` (when set; on macOS `work/disc`) |

@@ -458,6 +458,13 @@ class Launcher:
         self.row(f, tr('VSync'), self.choice(f, 'vsync', VSYNC_MODES),
                  tr('On: no tearing, but a little more latency. Automatic: Metal and live draw turn it on, '
                     'RPCS3 turns it off.'))
+        self.section(f, tr('Effects'))
+        self.row(f, tr('Depth of field'), self.choice(f, 'dof', ON_OFF),
+                 tr('Blurs what is far from the focus. Off is lighter on the CPU and GPU.'))
+        self.row(f, tr('Motion blur'), self.choice(f, 'motion_blur', ON_OFF),
+                 tr('Blurs fast movement. Off is lighter on the CPU and GPU.'))
+        self.row(f, tr('Anti-aliasing (MLAA)'), self.choice(f, 'mlaa', ON_OFF),
+                 tr('Smooths jagged edges on the SPUs. Off is lighter on the CPU; the edges show.'))
         self.section(f, tr('On-screen information'))
         self.row(f, tr('FPS counter'), self.choice(f, 'perf_overlay', ON_OFF),
                  tr("On macOS, FPS and frame time in the window's title.") if MAC else

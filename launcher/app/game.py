@@ -304,6 +304,18 @@ def game_environment(s):
         env['PS3_VSYNC'] = s['vsync']
     else:
         env.pop('PS3_VSYNC', None)
+    # The game's effects: RPCS3's "Disable ..." patches. The lifted code reads
+    # the GOWA_NO_* switches (tools/ppu_switches.json); MLAA also clears its
+    # flag in the game's data (0x81C9B4, a word whose low byte is 0x81C9B7).
+    for key, name in (('dof', 'GOWA_NO_DOF'), ('motion_blur', 'GOWA_NO_MB'), ('mlaa', 'GOWA_NO_MLAA')):
+        if s[key] == '0':
+            env[name] = '1'
+        else:
+            env.pop(name, None)
+    if s['mlaa'] == '0':
+        env['PS3_IMAGE_PATCH'] = '81C9B7:00'
+    else:
+        env.pop('PS3_IMAGE_PATCH', None)
     # Controls
     env['PS3_KEYMAP'] = keymap_env(s['keymap']) or 'start=Enter'
     env['PS3_PADMAP'] = padmap_env(s['padmap'])
