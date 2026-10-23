@@ -29,7 +29,7 @@ Needs `brew install cmake ninja sdl2 glslang spirv-cross ffmpeg`, and for the GP
 |---|---|
 | `windows/build.ps1 [-Name x] [-Configure]` | CMake (the first time, or `-Configure`) and `ninja -C build\win`, log in `build\logs\build[-x].log`. |
 | `windows/build-gpu.ps1 [-Configure]` | RPCS3's RSX library with MSVC. |
-| `windows/run.ps1` | Runs the game for `-Seconds` (0: until closed), then `tools\log_summary.py`. `-Save fresh\|backup\|keep`, `-Menu` (main menu in ~15 s), `-Level` (first level in ~100 s), `-Rpcs3`, `-CaptureAt`, `-Profile`. |
+| `windows/run.ps1` | Runs the game for `-Seconds` (0: until closed), then `tools\log_summary.py`. `-Save fresh\|backup\|keep`, `-Menu` (main menu in ~15 s), `-Level` (first level in ~100 s), `-D3d12` (RPCS3's RSX is the default), `-CaptureAt`, `-Profile`. |
 | `windows/launcher.ps1 [-Play]` | The launcher. |
 | `windows/snap.ps1 -Out x.png` | Saves the game window as a PNG, even behind other windows. |
 | `windows/replay.ps1 [-Sets] [-Save\|-Base] [-Runs] [-Env]` | Replays captured SPU jobs (`work\edge_cases\<set>`) outside the game: bytes PUT, and with `-Save` / `-Base` the whole local store and registers at return against a lifted baseline. |
