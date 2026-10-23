@@ -208,7 +208,10 @@
  {
   "ea": "0x723300",
   "span": "0x450",
-  "seen": false
+  "seen": false,
+  "native": {
+   "0x723300": "gowa_pic_723300"
+  }
  },
  {
   "ea": "0x723750",
