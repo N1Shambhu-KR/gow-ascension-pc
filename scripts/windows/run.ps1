@@ -6,7 +6,7 @@
 #   .\scripts\windows\run.ps1 -Profile -ProfileAt 45   # sample the busiest threads at 45 s
 #   .\scripts\windows\run.ps1 -Seconds 0 -Save keep    # play: runs until you close the window
 #   .\scripts\windows\run.ps1 -Menu -Seconds 60        # straight to the main menu (~15 s)
-#   .\scripts\windows\run.ps1 -Level -Rpcs3 -Seconds 150  # into the first level (~100 s), on RPCS3's RSX
+#   .\scripts\windows\run.ps1 -Level -Seconds 150      # into the first level (~100 s), live draw D3D12
 #
 # -Save fresh  : move the current save aside (work\save-moved\<time>) so the
 #                first-use config menus show up (the default)
@@ -19,7 +19,8 @@
 #                ~15 s. More presses enter the second menu (Single Player).
 # -Level       : as -Menu, with the presses that start the game: the first level
 #                (Kratos chained) is up in ~100 s.
-# -Rpcs3       : PS3_RSX=rpcs3 (RPCS3's RSX draws; the build needs RPCS3_RSX=1).
+# -Rpcs3       : PS3_RSX=rpcs3 (RPCS3's RSX draws; the build needs RPCS3_RSX=1). Only as the
+#                rendering reference: runs and measurements use live draw D3D12.
 # The log is build\logs\<Name>.log; tools\log_summary.py prints the summary,
 # and with -Profile the resolved profile is build\logs\<Name>-prof.txt.
 param(
