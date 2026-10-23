@@ -46,8 +46,9 @@
 //                      tasks' barriers (the Mac never reached the loading
 //                      screen). It waits on the game's own progress, not on
 //                      a clock.
-//   GCM_ROUND_RING     RsxSync's ring of 18 frame reports (0x1101ED00): only
-//                      those are watched. Another job polls reports at
+//   GCM_ROUND_RING     RsxSync's ring of 18 frame reports (RSX IO offset
+//                      0x1ED00, EA 0x1101ED00 or 0x7001ED00 as the runtime
+//                      lays the heap out): only those are watched. Another job polls reports at
 //                      0x1124xxxx/0x1126xxxx without reading them again, and
 //                      the gate waited a second for each. RsxSync reads its
 //                      reports in order, so the one after the last it read is
@@ -130,7 +131,7 @@ struct AscensionDefaults {
         set_default("GCM_PARK_SPU_HOLD_MS", "1000");
         set_default("GCM_REPORT_SPU_HOLD_MS", "50");
         set_default("GCM_ROUND_GATE", "9BAC30");
-        set_default("GCM_ROUND_RING", "1101ED00,18");
+        set_default("GCM_ROUND_RING", "io:1ED00,18");
         set_default("SPURS_READY_LEVEL", "1");
         set_default("SPURS_MAXCONT", "3=5,13=3,15=5,16=5,17=5");
         set_default("SPURS_IDLE_BACKOFF_MAX", "0");
