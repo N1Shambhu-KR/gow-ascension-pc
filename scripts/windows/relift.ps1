@@ -1,12 +1,13 @@
-# Re-lift the SPU job modules or the position-independent code fragments.
+# Re-lift the PPU code, the SPU job modules or the position-independent code fragments.
 #
+#   .\scripts\windows\relift.ps1 ppu                           # the game's PPU code -> src\recomp (all of it recompiles)
 #   .\scripts\windows\relift.ps1 jobmods                       # all 15 modules (all of them recompile)
 #   .\scripts\windows\relift.ps1 jobmods -Only e9f3f00d551e    # one module: only it recompiles
 #   .\scripts\windows\relift.ps1 fragments                     # tools\job_fragments.json -> src\spu\pic_*
 #
 # Extra entries per module: tools\jobmods_extra_funcs.json. Run .\scripts\windows\build.ps1 after.
 param(
-    [Parameter(Mandatory)][ValidateSet("jobmods", "fragments")][string]$What,
+    [Parameter(Mandatory)][ValidateSet("ppu", "jobmods", "fragments")][string]$What,
     [string]$Only = ""
 )
 
@@ -16,7 +17,15 @@ $Tools = Join-Path $Cfg.PS3KIT_DIR "tools"
 $Spu   = Join-Path $Root "src\spu"
 $Log   = Join-Path $Root "build\logs\relift-$What.log"
 
-if ($What -eq "jobmods") {
+if ($What -eq "ppu") {
+    # --reg-locals: each lifted function keeps the guest registers in C locals
+    # and checks its guest accesses against a view of the memory globals read
+    # at its entry (ps3kit tools\ppu_lifter.py, _localize_regs).
+    python (Join-Path $Tools "ppu_lifter.py") (Join-Path $Work "disc\PS3_GAME\USRDIR\EBOOT.ELF") `
+        --functions (Join-Path $Root "meta\functions.json") --hle-stubs (Join-Path $Root "meta\EBOOT.imports.json") `
+        --toc 0x81EF60 --code-end 0x62C4CC --chunk-lines 150000 --reg-locals `
+        -o (Join-Path $Root "src\recomp") 2>&1 | Tee-Object $Log
+} elseif ($What -eq "jobmods") {
     $mods = Join-Path $Work "jobmods"
     # Contiguous chunks lift as one C function (~10 -> ~12 fps in the level),
     # and module 218's functions with a native version call it (ps3kit

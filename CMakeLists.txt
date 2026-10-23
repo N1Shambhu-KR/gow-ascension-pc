@@ -366,6 +366,9 @@ endif()
 #     default; a PPC fmadd is spelt as one where the lifter means one.
 #   - /bigobj on MSVC. A single lifted file routinely passes the 65,536-section
 #     limit of the default object format.
+#   - no math errno. The lifted code never reads errno, and with it sqrtf (the
+#     VMX estimate helpers) was a call into the C runtime and ldexp(1.0, 0)
+#     (vctsxs with no scale) was never folded.
 #   - ASCENSION_PPU_AVX2: built for AVX2, BMI2 and FMA3 (Haswell / Zen and
 #     later), so the PPU's rotate-and-mask, shifts and float ops get the
 #     newer encodings. clang-cl takes -ffp-contract=off as /clang: and gets it
@@ -375,7 +378,7 @@ option(ASCENSION_PPU_AVX2 "Lifted PPU code built for AVX2, BMI2 and FMA3 (needs 
 if(MSVC)
     set(PPU_RECOMP_OPTIONS "/w;/bigobj")
     if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-        string(APPEND PPU_RECOMP_OPTIONS ";/clang:-ffp-contract=off")
+        string(APPEND PPU_RECOMP_OPTIONS ";/clang:-ffp-contract=off;/clang:-fno-math-errno")
         if(ASCENSION_PPU_AVX2)
             string(APPEND PPU_RECOMP_OPTIONS ";-mavx2;-mbmi2;-mfma")
         endif()
@@ -384,7 +387,7 @@ if(MSVC)
         COMPILE_OPTIONS "${PPU_RECOMP_OPTIONS}")
 else()
     set_source_files_properties(${RECOMP_SOURCES} PROPERTIES
-        COMPILE_OPTIONS "-w;-ffp-contract=off")
+        COMPILE_OPTIONS "-w;-ffp-contract=off;-fno-math-errno")
 endif()
 
 # ---------------------------------------------------------------------------
