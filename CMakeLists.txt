@@ -237,6 +237,14 @@ if(SPU_SOURCES)
             # every a*b+c in the helpers' scalar paths, which the SPU rounds twice.
             set(SPU_FMA_FLAG ";-mfma;-ffp-contract=off")
         endif()
+        # AVX2 (Haswell / Zen and later): the helpers' per-lane variable shifts
+        # and their four-lane estimate, interpolate and conversion forms
+        # (spu_helpers.h, upstream ps3recomp #512 and #500); without it those
+        # stay scalar. .env SPU_AVX2=1.
+        option(ASCENSION_SPU_AVX2 "Lifted SPU code built for AVX2 (needs such a CPU)" OFF)
+        if(ASCENSION_SPU_AVX2)
+            set(SPU_FMA_FLAG "${SPU_FMA_FLAG};-mavx2")
+        endif()
         # No warnings for generated SPU code: with registers promoted to locals
         # (SPU_LIFT_PROMOTE) a line flushes dozens of them, every warning
         # reprints its line, and the gigabytes of text stalled ninja for an
