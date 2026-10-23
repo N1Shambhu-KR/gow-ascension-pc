@@ -31,15 +31,18 @@ lift() {
     case $what in
     ppu)
         [ -f "$elf" ] || { echo "no $elf" >&2; exit 1; }
+        # --reg-locals as relift.ps1: guest registers in C locals.
         "$PYTHON" "$tools/ppu_lifter.py" "$elf" --functions "$here/meta/functions.json" \
             --hle-stubs "$here/meta/EBOOT.imports.json" --toc 0x81EF60 --code-end 0x62C4CC \
-            --chunk-lines 150000 -o "$here/src/recomp" > "$log" 2>&1 ;;
+            --chunk-lines 150000 --reg-locals -o "$here/src/recomp" > "$log" 2>&1 ;;
     spu)
         "$PYTHON" "$tools/build_spu_workloads.py" --images "$here/meta/spu" --lifted "$spu" \
             --out "$spu/spu_workloads.c" --register-fn ascension_spu_register_all --constructor \
             --title ascension --relift \
             --extra-funcs spu_wws_pm_at_0077CA80=0xA2C,0xA68,0x3368,0x3378 > "$log" 2>&1 ;;
     jobmods)
+        # merged chunks and module 218's native functions, as relift.ps1
+        LIFT_JOBMODS_MERGE=1 LIFT_NATIVE="$PS3KIT_DIR/libs/spu_hle/gowa_drawcmd/native_functions.txt" \
         "$PYTHON" "$tools/lift_jobmods.py" --jobmods "$WORK_DIR/jobmods" --out "$spu" \
             --register "$spu/jobmods_register.c" --symbol-prefix ascension \
             --extra-funcs-json "$here/tools/jobmods_extra_funcs.json" > "$log" 2>&1 ;;
