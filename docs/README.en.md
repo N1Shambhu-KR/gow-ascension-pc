@@ -38,7 +38,7 @@ No release yet. The milestones are in [MILESTONES.md](MILESTONES.md).
 
 ## Playing
 
-With the game built (below), open the launcher, `launcher\AscensionLauncher.exe` (or `.\scripts\windows\launcher.ps1`):
+With the game built (below), open the launcher, `launcher\AscensionLauncher.exe`:
 
 <p align="center"><img src="images/launcher/home.en.jpg" alt="The Ascension launcher" width="760"></p>
 

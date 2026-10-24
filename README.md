@@ -42,7 +42,7 @@ Ainda não há release. Os marcos estão em [docs/MILESTONES.md](docs/MILESTONES
 
 ## Jogando
 
-Com o jogo compilado (abaixo), abra o launcher, `launcher\AscensionLauncher.exe` (ou `.\scripts\windows\launcher.ps1`):
+Com o jogo compilado (abaixo), abra o launcher, `launcher\AscensionLauncher.exe`:
 
 <p align="center"><img src="docs/images/launcher/home.pt.jpg" alt="O launcher do Ascension" width="760"></p>
 
