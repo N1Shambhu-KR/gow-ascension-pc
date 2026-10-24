@@ -6,6 +6,7 @@
 #   .\scripts\windows\postbench.ps1 -Name merged -Out     # also write each result to build\logs\<Name>-out\
 #   .\scripts\windows\postbench.ps1 -Compare base,merged  # compare two -Out runs, record by record
 #   .\scripts\windows\postbench.ps1 -Native 7CD0          # the native version of that stage (GOWA_POST_NATIVE)
+#   .\scripts\windows\postbench.ps1 -Compare lift,nat -Abi -Only 9340   # one stage; r2, r4..r79 not compared
 #
 # The capture's own "after" state can carry DMA that landed during the call in
 # the game, so two builds are compared with each other (-Out, then -Compare).
@@ -16,6 +17,8 @@ param(
     [switch]$Out,
     [string]$Native = "",
     [string[]]$Compare = @(),
+    [switch]$Abi,
+    [string]$Only = "",
     [int]$TimeoutSec = 180
 )
 
@@ -26,12 +29,16 @@ if ($Compare.Count -eq 2) {
     $a = Join-Path $Logs "$($Compare[0])-out"
     $b = Join-Path $Logs "$($Compare[1])-out"
     $same = 0; $diff = 0
-    foreach ($f in Get-ChildItem $a -Filter "*.out") {
+    foreach ($f in Get-ChildItem $a -Filter "k$($Only)*.out") {
         $g = Join-Path $b $f.Name
         if (-not (Test-Path $g)) { Write-Host "$($f.Name): missing in $($Compare[1])"; $diff++; continue }
         $x = [IO.File]::ReadAllBytes($f.FullName); $y = [IO.File]::ReadAllBytes($g)
         $n = 0; $first = -1
-        for ($i = 0; $i -lt $x.Length; $i++) { if ($x[$i] -ne $y[$i]) { $n++; if ($first -lt 0) { $first = $i } } }
+        for ($i = 0; $i -lt $x.Length; $i++) {
+            # -Abi: a native stage writes r3 only; r2 and r4..r79 are not compared
+            if ($Abi -and (($i -ge 32 -and $i -lt 48) -or ($i -ge 64 -and $i -lt 1280))) { continue }
+            if ($x[$i] -ne $y[$i]) { $n++; if ($first -lt 0) { $first = $i } }
+        }
         if ($n) {
             $where = if ($first -lt 2048) { "register r$([int][Math]::Floor($first / 16))" } else { "local store 0x{0:X5}" -f ($first - 2048) }
             Write-Host "$($f.Name): $n bytes differ, first in $where"; $diff++
