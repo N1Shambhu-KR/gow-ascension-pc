@@ -44,7 +44,7 @@ Ainda não há release. Os marcos estão em [docs/MILESTONES.md](docs/MILESTONES
 
 Com o jogo compilado (abaixo), abra o launcher, `launcher\AscensionLauncher.exe` (ou `.\scripts\windows\launcher.ps1`):
 
-<p align="center"><img src="docs/images/launcher-home.jpg" alt="O launcher do Ascension" width="760"></p>
+<p align="center"><img src="docs/images/launcher/home.pt.jpg" alt="O launcher do Ascension" width="760"></p>
 
 JOGAR abre o jogo dentro da própria janela do launcher.
 
@@ -54,9 +54,9 @@ JOGAR abre o jogo dentro da própria janela do launcher.
 - **Jogo:** idioma (inglês, português, espanhol, francês, alemão, italiano, russo, polonês, turco) e legendas, que valem mesmo depois do primeiro uso; backup automático dos saves.
 - **Mods:** liga, desliga e ordena. Vem com **Pular intro** (direto ao carregamento, sem as telas de abertura); o botão **Criar mod PT-BR** monta o português do Brasil a partir da imagem do seu disco americano. Os mods incluídos são receitas: o launcher as aplica aos arquivos do seu disco, sem trazer nada do jogo.
 
-<p align="center"><img src="docs/images/launcher-controls.jpg" alt="A página de controles" width="760"></p>
+<p align="center"><img src="docs/images/launcher/controls.pt.jpg" alt="A página de controles" width="760"></p>
 
-<p align="center"><img src="docs/images/launcher-mods.jpg" alt="A página de mods" width="760"></p>
+<p align="center"><img src="docs/images/launcher/mods.pt.jpg" alt="A página de mods" width="760"></p>
 
 ## Compilando
 

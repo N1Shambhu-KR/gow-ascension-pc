@@ -40,7 +40,7 @@ No release yet. The milestones are in [MILESTONES.md](MILESTONES.md).
 
 With the game built (below), open the launcher, `launcher\AscensionLauncher.exe` (or `.\scripts\windows\launcher.ps1`):
 
-<p align="center"><img src="images/launcher-home.en.jpg" alt="The Ascension launcher" width="760"></p>
+<p align="center"><img src="images/launcher/home.en.jpg" alt="The Ascension launcher" width="760"></p>
 
 PLAY starts the game inside the launcher's own window.
 
@@ -50,9 +50,9 @@ PLAY starts the game inside the launcher's own window.
 - **Game:** language (English, Portuguese, Spanish, French, German, Italian, Russian, Polish, Turkish) and subtitles, which hold after the first start too; automatic save backups.
 - **Mods:** turn them on and off, and order them. **Skip intro** comes with it (straight to the loading screen, no intro screens); **Create PT-BR mod** builds Brazilian Portuguese from your US disc image. The included mods are recipes the launcher applies to your own disc's files; none carries anything from the game.
 
-<p align="center"><img src="images/launcher-controls.en.jpg" alt="The controls page" width="760"></p>
+<p align="center"><img src="images/launcher/controls.en.jpg" alt="The controls page" width="760"></p>
 
-<p align="center"><img src="images/launcher-mods.en.jpg" alt="The mods page" width="760"></p>
+<p align="center"><img src="images/launcher/mods.en.jpg" alt="The mods page" width="760"></p>
 
 ## Building
 
