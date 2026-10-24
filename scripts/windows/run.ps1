@@ -22,6 +22,11 @@
 # -D3d12       : live draw D3D12 draws (RSX_LIVE_DRAW) in place of RPCS3's RSX, the
 #                default (PS3_RSX=rpcs3; the build needs RPCS3_RSX=1). -Rpcs3 is still
 #                taken and changes nothing.
+# -NoShaderCache: no RPCS3 shader cache. By default the runs share the
+#                launcher's (gamedata\shader_cache, PS3_SHADER_CACHE): the shaders
+#                compiled before load behind a loading screen at the start.
+# -ThreadCpuAt N: at N s, every thread's host CPU (user/kernel) over 5 s, by thread
+#                name (tools\thread_cpu.py), into build\logs\<Name>-cpu.txt.
 # The log is build\logs\<Name>.log; tools\log_summary.py prints the summary,
 # and with -Profile the resolved profile is build\logs\<Name>-prof.txt.
 param(
@@ -37,7 +42,9 @@ param(
     [switch]$Level,
     [switch]$Rpcs3,                     # the default; kept for old command lines
     [switch]$D3d12,
-    [int]$CaptureAt = 0                 # press F12 (frame capture into captures\) at this second
+    [switch]$NoShaderCache,
+    [int]$CaptureAt = 0,                # press F12 (frame capture into captures\) at this second
+    [int]$ThreadCpuAt = 0               # per-thread host CPU over 5 s from this second
 )
 
 . (Join-Path $PSScriptRoot "env.ps1")
@@ -95,6 +102,9 @@ if ($Env -is [string]) {
 } elseif (-not $Menu) { $Env = $Env.Clone() }
 # RPCS3's RSX for every run, not only -Menu/-Level ones, unless -D3d12.
 if (-not $D3d12 -and -not $Env.ContainsKey("PS3_RSX")) { $Env["PS3_RSX"] = "rpcs3" }
+if (-not $Env.ContainsKey("PS3_SHADER_CACHE")) {
+    $Env["PS3_SHADER_CACHE"] = if ($NoShaderCache) { "0" } else { Join-Path $Root "gamedata\shader_cache" }
+}
 # The game inherits this process's environment; restore it afterwards.
 $saved = @{}
 foreach ($k in $Env.Keys) { $saved[$k] = [Environment]::GetEnvironmentVariable($k); [Environment]::SetEnvironmentVariable($k, [string]$Env[$k]) }
@@ -116,6 +126,11 @@ if ($Profile -and $game) {
     if ($wait -gt 0) { Start-Sleep -Seconds $wait }
     python -I (Join-Path $Root "tools\profile_threads.py") --pid $game.Id --dbg $dbg --threads $ProfileThreads `
         --verb $ProfileVerb --map (Join-Path $Root "build\win\AscensionRecomp.map") --out (Join-Path $Logs "$Name-prof.txt")
+}
+if ($ThreadCpuAt -gt 0 -and $game) {
+    $wait = $ThreadCpuAt - ((Get-Date) - $t0).TotalSeconds
+    if ($wait -gt 0) { Start-Sleep -Seconds $wait }
+    python -I (Join-Path $Root "tools\thread_cpu.py") --pid $game.Id --secs 5 --out (Join-Path $Logs "$Name-cpu.txt")
 }
 if ($CaptureAt -gt 0 -and $game) {
     $wait = $CaptureAt - ((Get-Date) - $t0).TotalSeconds
