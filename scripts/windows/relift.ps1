@@ -65,7 +65,13 @@ if ($What -eq "ppu") {
     }
     # --merge-chunks: each stage's loops become gotos in one C function instead
     # of a chunk per function with every register stored to ctx on each edge.
+    # SPU_LIFT_PROMOTE_FUNCS: the hot call-free functions of the round with
+    # their SPU registers in C locals (0x9E60 9.1 -> 6.5 us a call, identical);
+    # set it yourself to override.
+    $promoteSet = [bool]$env:SPU_LIFT_PROMOTE_FUNCS
+    if (-not $promoteSet) { $env:SPU_LIFT_PROMOTE_FUNCS = "9E60,B730,87D0,8E20" }
     python (Join-Path $Tools "spu_lifter.py") $elf --auto-functions $elf --symbol-prefix "${img}_" -o $out --merge-chunks @nat 2>&1 | Tee-Object $Log
+    if (-not $promoteSet) { Remove-Item Env:SPU_LIFT_PROMOTE_FUNCS }
     # The includes as build_spu_workloads.py leaves them (resolved by -I).
     foreach ($f in "spu_recomp.c", "spu_recomp.h") {
         $path = Join-Path $out $f
