@@ -60,7 +60,7 @@ if ($Out) {
     New-Item -ItemType Directory -Force $od | Out-Null
     $env:GOWA_POST_BENCH_OUT = $od
 }
-if ($Native) { $env:GOWA_POST_NATIVE = $Native }
+$env:GOWA_POST_NATIVE = if ($Native) { $Native } else { "none" }   # the game's default is all
 try {
     $p = Start-Process -FilePath $Exe -ArgumentList "`"$Elf`"" -WorkingDirectory $Root -NoNewWindow -PassThru `
         -RedirectStandardError $Log -RedirectStandardOutput (Join-Path $Logs "$Name-stdout.log")
