@@ -1,4 +1,4 @@
-# Re-lift the PPU code, the SPU job modules or the position-independent code fragments.
+﻿# Re-lift the PPU code, the SPU job modules or the position-independent code fragments.
 #
 #   .\scripts\windows\relift.ps1 ppu                           # the game's PPU code -> src\recomp (all of it recompiles)
 #   .\scripts\windows\relift.ps1 jobmods                       # all 15 modules (all of them recompile)
@@ -63,7 +63,9 @@ if ($What -eq "ppu") {
     foreach ($l in Get-Content (Join-Path $Cfg.PS3KIT_DIR "libs\spu_hle\gowa_post\native_functions.txt")) {
         if ($l -match '^\s*(0x[0-9A-Fa-f]+)\s+(\S+)') { $nat += "--native"; $nat += "$($Matches[1])=$($Matches[2])" }
     }
-    python (Join-Path $Tools "spu_lifter.py") $elf --auto-functions $elf --symbol-prefix "${img}_" -o $out @nat 2>&1 | Tee-Object $Log
+    # --merge-chunks: each stage's loops become gotos in one C function instead
+    # of a chunk per function with every register stored to ctx on each edge.
+    python (Join-Path $Tools "spu_lifter.py") $elf --auto-functions $elf --symbol-prefix "${img}_" -o $out --merge-chunks @nat 2>&1 | Tee-Object $Log
     # The includes as build_spu_workloads.py leaves them (resolved by -I).
     foreach ($f in "spu_recomp.c", "spu_recomp.h") {
         $path = Join-Path $out $f
