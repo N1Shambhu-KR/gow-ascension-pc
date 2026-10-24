@@ -5,4 +5,4 @@
 here=$(cd "$(dirname "$0")/../.." && pwd)
 top=$(cd "$here/.." && pwd)
 if [ -x "$top/.venv/bin/python" ]; then py="$top/.venv/bin/python"; else py=python3; fi
-exec "$py" "$here/launcher/ascension_launcher.py" "$@"
+exec "$py" "$top/work/launcher/ascension_launcher.py" "$@"   # the source lives in work/launcher
