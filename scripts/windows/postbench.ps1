@@ -37,6 +37,8 @@ if ($Compare.Count -eq 2) {
         for ($i = 0; $i -lt $x.Length; $i++) {
             # -Abi: a native stage writes r3 only; r2 and r4..r79 are not compared
             if ($Abi -and (($i -ge 32 -and $i -lt 48) -or ($i -ge 64 -and $i -lt 1280))) { continue }
+            # 0x7170 returns nothing in r3 (the lift leaves scratch there)
+            if ($Abi -and $f.Name -like "k7170_*" -and $i -ge 48 -and $i -lt 64) { continue }
             if ($x[$i] -ne $y[$i]) { $n++; if ($first -lt 0) { $first = $i } }
         }
         if ($n) {
