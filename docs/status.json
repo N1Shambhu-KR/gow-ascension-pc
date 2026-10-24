@@ -104,7 +104,7 @@
       "group": "Velocidade",
       "column": 3,
       "parts": [
-        {"name": "Primeiro nível 16,7/30 fps", "done": 0.557, "weight": 15}
+        {"name": "Primeiro nível ~22/30 fps", "done": 0.733, "weight": 15}
       ]
     }
   ]

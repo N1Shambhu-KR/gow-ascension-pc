@@ -20,7 +20,7 @@
 Ascension translates the game's code, for the PS3's main processor (PPU) and its SPUs, into C++ and compiles it for your PC, on top of the [ps3recomp](https://github.com/sp00nznet/ps3recomp) runtime. It is not an emulator: it is the game itself, recompiled. A sibling of [Sparta](https://github.com/arnaldolima1/gow-ghost-of-sparta-pc) and [Olympus](https://github.com/arnaldolima1/gow-chains-of-olympus-pc), which do the same for the PSP God of War games.
 
 > [!WARNING]
-> **An experiment: not playable from start to finish yet.** The game reaches the first level, but slowly (~15-22 fps, depending on the scene). Windows only for now (macOS support is paused).
+> **An experiment: not playable from start to finish yet.** The game reaches the first level and the first boss fight, but slowly (~18-23 fps in the level, 13-21 in the fight). Windows only for now (macOS support is paused).
 
 > [!IMPORTANT]
 > **No game data is included.** You need your own copy, the **European release `BCES-01741`** (1.00), taken from your disc. Nobody here can give you the game or keys. A fan project, not affiliated with Sony Interactive Entertainment or Santa Monica Studio.
@@ -29,10 +29,10 @@ Ascension translates the game's code, for the PS3's main processor (PPU) and its
 
 October 2026, on Windows:
 
-- **From boot to the first level:** intro screens, loading, first-use menus, the opening cinematic (picture and sound in sync), the main menu and the first level, with Kratos in chains.
+- **From boot to the first boss fight:** intro screens, loading, first-use menus, the opening cinematic (picture and sound in sync), the main menu, the first level with Kratos in chains and the first boss fight.
 - **Two renderers:** [RPCS3](https://github.com/RPCS3/rpcs3)'s RSX (Vulkan or OpenGL), which draws the game correctly, and the project's own *live draw* (D3D12).
-- **Performance:** the main menu runs at ~30 fps; the first level at ~15-22 fps, depending on the scene (it was ~9). The limit is the recompiled SPU code, not the graphics card: the per-draw geometry job (module 218) costs the most, and it is being rewritten as native code, piece by piece: index decompression, skinning, normals and tangents already run natively, each checked byte for byte against recorded game jobs.
-- **A launcher** in English, Portuguese and Spanish, with video, controls, language, subtitles and mods; **Brazilian Portuguese**, voices and text, built from your own US disc.
+- **Performance:** the main menu runs at ~30-40 fps; the first level at ~18-23 fps, depending on the scene (it was ~9); the boss fight at 13-21. The limit is the recompiled SPU work, not the graphics card. Heavy parts already run as native code, each checked against the original: the per-draw geometry (indices, skinning, normals and tangents) and the post-process that smooths the image's edges. Next is cutting the costs every SPU job pays, so the gain shows across the whole game and the frame rate holds steady.
+- **A launcher** in English, Portuguese and Spanish, with video (including turning off effects such as depth of field, motion blur and MLAA, still experimental), controls, language, subtitles and mods; **Brazilian Portuguese**, voices and text, built from your own US disc.
 
 No release yet. The milestones are in [MILESTONES.md](MILESTONES.md).
 

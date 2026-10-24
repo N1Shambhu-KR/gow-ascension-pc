@@ -27,3 +27,9 @@ What the game could do, and when.
 | 2026-10-20 | Level ~10 → ~15 fps: lifted SPU floats without the extended-range check (RPCS3's "approximate" rules), no local-store diagnostics in lifted code, contiguous job-module code lifted as one function, streamed code found by an index. |
 | 2026-10-21 | Level ~15 → ~16.7 fps: each SPU on its own core, the main PPU thread on core 0. |
 | 2026-10-21 | **SPU job replay:** recorded game jobs rerun outside the game and checked byte for byte by what they write, with timing and profiling. Module 218 (per-draw geometry) decoded: index decompression and position transform written natively, identical on the recorded jobs; the rest of the job goes native next. |
+| 2026-10-22 | Level ~15 → ~17.5 fps: the main processor's recompiled code keeps the game's registers in local variables instead of memory (re-lifted; 1.5-1.8x on isolated functions). |
+| 2026-10-23 | More SPU code that was still being interpreted is now recompiled, and two streamed pieces of the geometry job run natively. |
+| 2026-10-23 | Launcher **Video → Effects**: depth of field, motion blur and MLAA can be turned off (the same patches RPCS3 offers, found in the 1.00 disc). Experimental: textures still glitch with them off. |
+| 2026-10-23 | Level ~17.5 → ~22 fps: lifted SPU code built for AVX2, lighter SPU runtime. |
+| 2026-10-23 | **The frame's edge-smoothing post-process runs natively:** its four heaviest SPU stages rewritten in C, identical to the original on 12 million checked calls; that work costs about half. |
+| 2026-10-23 | **First boss fight reached** (13-21 fps while fighting). The profile there shows the SPU time spread over many small pieces, so the next work goes after costs every SPU job pays, not one function at a time. |
