@@ -38,22 +38,21 @@ No release yet. The milestones are in [MILESTONES.md](MILESTONES.md).
 
 ## Playing
 
-With the game built (below), open the launcher:
+With the game built (below), open the launcher, `launcher\AscensionLauncher.exe` (or `.\scripts\windows\launcher.ps1`):
 
-```powershell
-.\scripts\windows\launcher.ps1
-```
-
-<p align="center"><img src="images/launcher-home.jpg" alt="The Ascension launcher" width="760"></p>
+<p align="center"><img src="images/launcher-home.en.jpg" alt="The Ascension launcher" width="760"></p>
 
 PLAY starts the game inside the launcher's own window.
 
 - **Video:** renderer (RPCS3 Vulkan or OpenGL, live draw), internal resolution and anisotropic filtering (RPCS3), window or full screen (F11 or Alt+Enter also toggle in game), window size, aspect ratio, image scaling, VSync, FPS counter.
 - **Controls:** tabs for keyboard and mouse (two keys per control: click one and press the new key) and for the controller (which button does what, dead zone). Default: WASD walks, the arrows evade, Space/J/I/L or the mouse for the face buttons, Shift blocks, Esc or Enter pauses. Keyboard, mouse and controller all work at once.
+- **Launcher** in several languages; Automatic follows the game's language.
 - **Game:** language (English, Portuguese, Spanish, French, German, Italian, Russian, Polish, Turkish) and subtitles, which hold after the first start too; automatic save backups.
 - **Mods:** turn them on and off, and order them. **Skip intro** comes with it (straight to the loading screen, no intro screens); **Create PT-BR mod** builds Brazilian Portuguese from your US disc image. The included mods are recipes the launcher applies to your own disc's files; none carries anything from the game.
 
-<p align="center"><img src="images/launcher-mods.jpg" alt="The mods page" width="760"></p>
+<p align="center"><img src="images/launcher-controls.en.jpg" alt="The controls page" width="760"></p>
+
+<p align="center"><img src="images/launcher-mods.en.jpg" alt="The mods page" width="760"></p>
 
 ## Building
 
