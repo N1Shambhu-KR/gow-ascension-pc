@@ -31,7 +31,8 @@ October 2026, on Windows:
 
 - **From boot to the first boss fight:** intro screens, loading, first-use menus, the opening cinematic (picture and sound in sync), the main menu, the first level with Kratos in chains and the first boss fight.
 - **Two renderers:** [RPCS3](https://github.com/RPCS3/rpcs3)'s RSX (Vulkan or OpenGL), which draws the game correctly, and the project's own *live draw* (D3D12).
-- **Performance:** the main menu runs at ~30-40 fps; the first level at ~18-23 fps, depending on the scene (it was ~9); the boss fight at 13-21. The limit is the recompiled SPU work, not the graphics card. Heavy parts already run as native code, each checked against the original: the per-draw geometry (indices, skinning, normals and tangents) and the post-process that smooths the image's edges. Next is cutting the costs every SPU job pays, so the gain shows across the whole game and the frame rate holds steady.
+- **Performance:** the main menu runs at ~30-40 fps; the first level at ~18-23 fps, depending on the scene (it was ~9); the boss fight at 13-21. The limit is the recompiled SPU work, not the graphics card. Heavy parts already run as native code, each checked against the original: the per-draw geometry (indices, skinning, normals and tangents) and the post-process that smooths the image's edges. Next is cutting the costs every SPU job pays, so the gain shows across the whole game and the frame rate holds steady. These numbers are from a Ryzen 5 5600G with an RX 7600; on a Ryzen 7 9800X3D with an RX 9070 XT (RPCS3's RSX, Vulkan), the first level's creature fight runs at ~45-57 fps.
+- **Known issues:** right after the creature fight, near the giant arm, an object of the area is drawn several times, each copy slightly offset (it goes away when the camera leaves); and the game sometimes hangs on an SPU job list that never finishes (`BATCHJOB: Waiting for batch job list ...`).
 - **A launcher** in English, Portuguese and Spanish, with video (including turning off effects such as depth of field, motion blur and MLAA, still experimental), controls, language, subtitles and mods; **Brazilian Portuguese**, voices and text, built from your own US disc.
 
 No release yet. The milestones are in [MILESTONES.md](MILESTONES.md).
@@ -73,6 +74,7 @@ Saves are kept in `gamedata/dev_hdd0`.
 
 - [ps3recomp](https://github.com/sp00nznet/ps3recomp), by sp00nznet and contributors: the recompiler, the runtime and the system libraries.
 - [RPCS3](https://github.com/RPCS3/rpcs3): its RSX code serves as a renderer (GPL-2.0; a build that includes it is GPL-2.0).
+- [iSamigor](https://github.com/iSamigor): testing on a second PC (Ryzen 7 9800X3D, RX 9070 XT) and runtime fixes.
 - `tools/decrypt_self.py`, from the [Twisted Metal](https://github.com/sp00nznet/twistedmetal) port (MIT).
 - The launcher follows the style of [gow3_pc](https://github.com/FelipePrado0/gow3_pc)'s; Cinzel typeface (SIL Open Font License).
 - God of War is a registered trademark of Sony Interactive Entertainment.
