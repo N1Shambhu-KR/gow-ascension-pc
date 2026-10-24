@@ -18,7 +18,9 @@ param(
     [switch]$Base,
     [hashtable]$Env = @{},
     [string]$Name = "",
-    [int]$TimeoutSec = 180
+    [int]$TimeoutSec = 180,
+    [int]$Profile = 0                  # sample the replaying thread for this many seconds, 1 s in
+                                       # (SPU_JOB_REPLAY_PROF; give it -Runs enough to last)
 )
 
 . (Join-Path $PSScriptRoot "env.ps1")
@@ -34,6 +36,7 @@ foreach ($set in $Sets) {
     $vars = @{ SPU_JOB_REPLAY = "$dir,5,$Runs"; SPU_JOB_REPLAY_RECLAIM = "1CF50:11000,28F50:1D000" }
     if ($Save) { New-Item -ItemType Directory -Force $end | Out-Null; $vars.SPU_JOB_REPLAY_LS = "save,$end" }
     elseif ($Base) { $vars.SPU_JOB_REPLAY_LS = "base,$end" }
+    if ($Profile -gt 0) { $vars.SPU_JOB_REPLAY_PROF = "$Profile" }
     foreach ($k in $Env.Keys) { $vars[$k] = $Env[$k] }
     $old = @{}
     foreach ($k in $vars.Keys) { $old[$k] = [Environment]::GetEnvironmentVariable($k); [Environment]::SetEnvironmentVariable($k, [string]$vars[$k]) }
