@@ -159,6 +159,10 @@ struct AscensionDefaults {
         // 8 logical CPUs, menu frame -0.6 ms (+0.9 fps); first level and 12
         // CPUs the same.
         set_default("PS3_RSX_HOLD_WAIT", "1");
+        // The job scheduler's not-ready turn (0x416AAC, tools/ppu_switches.json)
+        // sleeps until an SPU's next write instead of scanning its table again:
+        // menu at 8 logical CPUs -1.0 ms a frame, +1.3 fps; first level the same.
+        set_default("GOWA_PPU_SCHED_WAIT", "1");
         set_default("SPU_REJOIN", "204:9700-1C000");
         set_default("SPU_REJOIN_CALL", "1");
         set_default("LD_PERF_OVERLAY", "1");
