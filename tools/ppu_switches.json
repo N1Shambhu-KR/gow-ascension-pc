@@ -1,4 +1,8 @@
 [
+  {"addr": "0x003E8918", "insn": "0x396003FC", "env": "GOWA_PPU_SCHED_WAIT",
+   "note": "li r11,1020: the frame routine's wait for the counter at [[r30+0xC]+0xE0] (func_003E8298, loop 0x3E8900, ~8 % of the main thread spinning) sleeps until SPU progress"},
+  {"addr": "0x003E891C", "insn": "0x44000002", "env": "GOWA_PPU_SCHED_WAIT",
+   "note": "sc: with the li above, in two of that loop's sixteen nops"},
   {"addr": "0x00416AAC", "insn": "0x396003FC", "env": "GOWA_PPU_SCHED_WAIT",
    "note": "li r11,1020: the job scheduler's not-ready turn (func_00416A00) waits for SPU progress (sys_timer.c syscall 1020)"},
   {"addr": "0x00416AB0", "insn": "0x44000002", "env": "GOWA_PPU_SCHED_WAIT",
