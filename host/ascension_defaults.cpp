@@ -117,6 +117,25 @@
 
 namespace {
 
+// The logical CPUs this process may run on (its affinity mask), else the host's.
+unsigned logical_cpus()
+{
+#ifdef _WIN32
+    DWORD_PTR proc = 0, sys = 0;
+    if (GetProcessAffinityMask(GetCurrentProcess(), &proc, &sys) && proc) {
+        unsigned n = 0;
+        for (; proc; proc &= proc - 1) n++;
+        return n;
+    }
+    SYSTEM_INFO si;
+    GetSystemInfo(&si);
+    return si.dwNumberOfProcessors;
+#else
+    const long n = sysconf(_SC_NPROCESSORS_ONLN);
+    return n > 0 ? (unsigned)n : 1u;
+#endif
+}
+
 void set_default(const char* name, const char* value)
 {
 #ifdef _WIN32
@@ -171,6 +190,13 @@ struct AscensionDefaults {
         set_default("PS3_OVERLAY_COLORS", "#E2B86AFF,#0B090899,#E2B86AFF,#00000000");
         set_default_overlay_font();
         set_default("PS3_VERBOSE", "0");
+        // Five SPU workers instead of the title's six on a host with 8 logical
+        // CPUs or fewer: the sixth competes with the PPU and RSX threads for
+        // cores (as RPCS3's "Max SPURS threads"). First level at 8 logical
+        // CPUs: 18 fps both ways, 6.84 -> 6.43 cores; at 12: 27 -> 26 fps,
+        // 8.10 -> 7.10 cores, so 12 or more keep six.
+        if (logical_cpus() <= 8)
+            set_default("SPURS_NSPUS", "5");
     }
 
     // launcher/Cinzel-Black.ttf beside a build in build/<platform>/ (the
