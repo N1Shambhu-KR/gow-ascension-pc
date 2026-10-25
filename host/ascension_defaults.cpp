@@ -182,6 +182,10 @@ struct AscensionDefaults {
         // sleeps until an SPU's next write instead of scanning its table again:
         // menu at 8 logical CPUs -1.0 ms a frame, +1.3 fps; first level the same.
         set_default("GOWA_PPU_SCHED_WAIT", "1");
+        // The game measures its frame time with a one-vblank floor (59.94 Hz,
+        // func_002B3C48): correct up to 60 fps, fast above. PS3_FRAME_LIMIT=60
+        // caps it; not a default while the game stays below 60 (menu 42 with
+        // it against 48 without, one run each).
         set_default("SPU_REJOIN", "204:9700-1C000");
         set_default("SPU_REJOIN_CALL", "1");
         set_default("LD_PERF_OVERLAY", "1");
