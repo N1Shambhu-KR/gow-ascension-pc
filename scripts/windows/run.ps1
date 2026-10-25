@@ -25,6 +25,9 @@
 # -NoShaderCache: no RPCS3 shader cache. By default the runs share the
 #                launcher's (gamedata\shader_cache, PS3_SHADER_CACHE): the shaders
 #                compiled before load behind a loading screen at the start.
+# -Affinity HEX: the game's logical CPUs (process affinity mask, set as soon as
+#                it is up): a smaller PC on this one, e.g. FF = 4 cores / 8 threads,
+#                3F = 3 cores / 6 threads. SPU pins (SPURS_PIN) outside it are dropped.
 # -ThreadCpuAt N: at N s, every thread's host CPU (user/kernel) over 5 s, by thread
 #                name (tools\thread_cpu.py), into build\logs\<Name>-cpu.txt.
 # The log is build\logs\<Name>.log; tools\log_summary.py prints the summary,
@@ -44,7 +47,8 @@ param(
     [switch]$D3d12,
     [switch]$NoShaderCache,
     [int]$CaptureAt = 0,                # press F12 (frame capture into captures\) at this second
-    [int]$ThreadCpuAt = 0               # per-thread host CPU over 5 s from this second
+    [int]$ThreadCpuAt = 0,              # per-thread host CPU over 5 s from this second
+    [string]$Affinity = ""              # process affinity mask (hex), a smaller PC
 )
 
 . (Join-Path $PSScriptRoot "env.ps1")
@@ -119,6 +123,14 @@ $p = Start-Process cmd.exe -ArgumentList "/c `"`"$Exe`" `"$Elf`" > `"$Log`" 2>&1
 foreach ($k in $saved.Keys) { [Environment]::SetEnvironmentVariable($k, $saved[$k]) }
 Write-Host $(if ($Seconds -le 0) { "running until closed (log: $Log)" } else { "running for $Seconds s (log: $Log)" })
 
+if ($Affinity) {
+    # as early as the process shows, before the SPU threads start
+    for ($i = 0; $i -lt 100 -and -not $game; $i++) {
+        $game = Get-Process AscensionRecomp -ErrorAction SilentlyContinue | Sort-Object StartTime -Descending | Select-Object -First 1
+        if (-not $game) { Start-Sleep -Milliseconds 20 }
+    }
+    if ($game) { $game.ProcessorAffinity = [IntPtr][Convert]::ToInt64($Affinity, 16); Write-Host "affinity 0x$Affinity" }
+}
 Start-Sleep -Seconds 2
 $game = Get-Process AscensionRecomp -ErrorAction SilentlyContinue | Sort-Object StartTime -Descending | Select-Object -First 1
 if ($Profile -and $game) {

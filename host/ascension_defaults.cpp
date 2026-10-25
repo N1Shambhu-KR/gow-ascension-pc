@@ -149,6 +149,16 @@ struct AscensionDefaults {
         // The main PPU thread on core 0, which SPURS_PIN leaves free: it
         // waits on the SPUs and kicks their next jobs. ~15.8 -> ~16.7 fps.
         set_default("PS3_PIN_PPU", "1");
+        // The main thread's usleep(30) poll of the frame counter (0x99AAC4,
+        // lr 0x3E8378, ~5800 a second, each a 30 us spin) waits for an SPU's
+        // write to it instead. Menu: main thread 86 -> 69 % of a core, fps
+        // the same (menu and first level, in-run A/B).
+        set_default("PS3_PPU_POLL_WAIT", "3E8378:99AAC4");
+        // The RSX thread's hold for the SPU post-process round sleeps until
+        // the round's label is written instead of spinning with a yield. With
+        // 8 logical CPUs, menu frame -0.6 ms (+0.9 fps); first level and 12
+        // CPUs the same.
+        set_default("PS3_RSX_HOLD_WAIT", "1");
         set_default("SPU_REJOIN", "204:9700-1C000");
         set_default("SPU_REJOIN_CALL", "1");
         set_default("LD_PERF_OVERLAY", "1");
