@@ -245,6 +245,16 @@ if(SPU_SOURCES)
         if(ASCENSION_SPU_AVX2)
             set(SPU_FMA_FLAG "${SPU_FMA_FLAG};-mavx2")
         endif()
+        # Built for the compiling CPU (AVX-512 on Zen 4/5): the exe then runs
+        # only on that machine or one like it. .env NATIVE=1.
+        option(ASCENSION_NATIVE "Lifted SPU and PPU code built with -march=native" OFF)
+        if(ASCENSION_NATIVE)
+            if(MSVC)
+                set(SPU_FMA_FLAG "${SPU_FMA_FLAG};/clang:-march=native")
+            else()
+                set(SPU_FMA_FLAG "${SPU_FMA_FLAG};-march=native")
+            endif()
+        endif()
         # No warnings for generated SPU code: with registers promoted to locals
         # (SPU_LIFT_PROMOTE) a line flushes dozens of them, every warning
         # reprints its line, and the gigabytes of text stalled ninja for an
@@ -389,6 +399,9 @@ if(MSVC)
         string(APPEND PPU_RECOMP_OPTIONS ";/clang:-ffp-contract=off;/clang:-fno-math-errno")
         if(ASCENSION_PPU_AVX2)
             string(APPEND PPU_RECOMP_OPTIONS ";-mavx2;-mbmi2;-mfma")
+        endif()
+        if(ASCENSION_NATIVE)
+            string(APPEND PPU_RECOMP_OPTIONS ";/clang:-march=native")
         endif()
     endif()
     set_source_files_properties(${RECOMP_SOURCES} PROPERTIES

@@ -42,6 +42,7 @@ $Cfg.GPU_BUILD_DIR      = Resolve-Setting (Get-Setting "GPU_BUILD_DIR")
 $Cfg.SPU_FMA            = (Get-Setting "SPU_FMA") -eq "1"
 $Cfg.PPU_AVX2           = (Get-Setting "PPU_AVX2") -eq "1"        # lifted PPU code for AVX2/BMI2/FMA3
 $Cfg.SPU_AVX2           = (Get-Setting "SPU_AVX2") -eq "1"        # lifted SPU code for AVX2
+$Cfg.NATIVE             = (Get-Setting "NATIVE") -eq "1"          # lifted code for this CPU (-march=native, AVX-512)
 $Cfg.SPU_XFLOAT_APPROX  = (Get-Setting "SPU_XFLOAT_APPROX") -ne "0"   # on unless .env says 0
 $Cfg.SPU_LS_HOOKS       = (Get-Setting "SPU_LS_HOOKS") -eq "1"        # LS diagnostics in lifted code
 $vk = Get-Setting "VULKAN_SDK"
