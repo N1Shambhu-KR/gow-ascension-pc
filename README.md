@@ -43,11 +43,11 @@ Ainda não há release. Os marcos estão em [docs/MILESTONES.md](docs/MILESTONES
 
 ## Jogando
 
-Com o jogo compilado (abaixo), abra o launcher, `launcher\AscensionLauncher.exe`:
+Com o jogo compilado (abaixo), instale o launcher pelo `AscensionLauncher_<versão>_x64-setup.exe` das [releases](https://github.com/arnaldolima1/gow-ascension-pc/releases) e, na primeira vez, aponte a pasta `ascension` em **Avançado › Pasta do jogo**. Ele se atualiza sozinho quando sai uma versão nova.
 
 <p align="center"><img src="docs/images/launcher/home.pt.jpg" alt="O launcher do Ascension" width="760"></p>
 
-JOGAR abre o jogo dentro da própria janela do launcher.
+JOGAR abre o jogo; o launcher se esconde até ele fechar.
 
 - **Vídeo:** renderizador (RPCS3 Vulkan ou OpenGL, live draw), resolução interna e filtro anisotrópico (RPCS3), janela ou tela cheia (F11 ou Alt+Enter também alternam durante o jogo), tamanho da janela, proporção, escala da imagem, sincronização vertical, contador de FPS.
 - **Controles:** abas para teclado e mouse (duas teclas por comando, clique e aperte a nova) e para o controle (qual botão faz cada um, zona morta). Padrão: WASD anda, setas esquivam, Espaço/J/I/L ou o mouse nos botões, Shift defende, Esc ou Enter pausa. Teclado, mouse e controle funcionam juntos.
