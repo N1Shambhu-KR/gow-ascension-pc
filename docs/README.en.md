@@ -39,11 +39,11 @@ No release yet. The milestones are in [MILESTONES.md](MILESTONES.md).
 
 ## Playing
 
-With the game built (below), open the launcher, `launcher\AscensionLauncher.exe`:
+With the game built (below), install the launcher with `AscensionLauncher_<version>_x64-setup.exe` from the [releases](https://github.com/arnaldolima1/gow-ascension-pc/releases) and, the first time, choose the `ascension` folder under **Advanced › Game folder**. It updates itself when a new version is out.
 
 <p align="center"><img src="images/launcher/home.en.jpg" alt="The Ascension launcher" width="760"></p>
 
-PLAY starts the game inside the launcher's own window.
+PLAY starts the game; the launcher hides until it closes.
 
 - **Video:** renderer (RPCS3 Vulkan or OpenGL, live draw), internal resolution and anisotropic filtering (RPCS3), window or full screen (F11 or Alt+Enter also toggle in game), window size, aspect ratio, image scaling, VSync, FPS counter.
 - **Controls:** tabs for keyboard and mouse (two keys per control: click one and press the new key) and for the controller (which button does what, dead zone). Default: WASD walks, the arrows evade, Space/J/I/L or the mouse for the face buttons, Shift blocks, Esc or Enter pauses. Keyboard, mouse and controller all work at once.
